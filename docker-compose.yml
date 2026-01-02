@@ -1,0 +1,10 @@
+services:
+  photo-app:
+    build: .
+    working_dir: /workspace
+    volumes:
+      - ".:/workspace"
+      - "/workspace/node_modules"
+    command: npm run dev
+    ports:
+      - "8080:5173"
