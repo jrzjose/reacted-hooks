@@ -2,20 +2,38 @@ import * as React from 'react'
 import { Context } from '../context/AppContext'
 import Navbar from './Navbar'
 import UploadForm from './UploadForm'
+import { useAuthContext } from "../context/AuthContext";
 
-const Layout: React.FC<React.ReactNode> = ({children}:React.ReactNode) => {
-    const {dispatch, state} = React.useContext(Context);
-    const toggle = (bool:boolean) => dispatch({type: "collapse", payload: {bool}});
+
+const AddButton: React.FC = () => {
+    const { state, dispatch } = React.useContext(Context);
+    const { isCollapsed: isVisible } = state; // destructuring the current state
+    const toggle = (bool: boolean) => dispatch({ type: "collapse", payload: { bool } });
+    return (
+        <>
+            <button className="btn btn-success float-end" onClick={() => toggle(!isVisible)} >
+                {isVisible ? "Close" : "+ Add"}
+            </button>
+            <div className="clearfix mb-4"></div>
+        </>
+    );
+}
+
+const Layout: React.FC<React.ReactNode> = ({ children }: React.ReactNode) => {
+    const { read } = React.useContext(Context);
+    const { authenticate } = useAuthContext();
+
+    React.useEffect(() => {
+        read();
+        authenticate();
+    }, []);
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
             <div className="container  mt-5">
-                <button className="btn btn-success float-end" onClick={() => toggle(!state.isCollapsed)}>
-                    {state.isCollapsed ? 'Close' : '+ Add'}
-                </button>
-                <div className="clearfix mb-4"></div>
-                <UploadForm/>
+                <AddButton/>
+                <UploadForm />
                 {children}
             </div>
         </>

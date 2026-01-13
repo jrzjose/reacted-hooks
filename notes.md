@@ -23,3 +23,6 @@ npm install bootstrap
 ```
 
 
+
+## `URL.createObjectURL()`
+The URL.createObjectURL() static method creates a unique, temporary URL string that represents a specified File, Blob, or MediaSource object
